@@ -1,0 +1,46 @@
+# Build outputs
+/bin/
+/obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# ASP.NET Core
+appsettings*.json    # se tiver senhas, tokens ou connection strings
+wwwroot/lib/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# EF Core Migrations (opcional)
+# Migrations/           # se você quer gerar migrations localmente, pode ignorar
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secrets
+secrets.json
+.env
+
+# Dotnet global tools cache
+~/.dotnet/tools
+
+# Test Results
+/TestResults/
+
+# Docker
+docker-compose.override.yml
