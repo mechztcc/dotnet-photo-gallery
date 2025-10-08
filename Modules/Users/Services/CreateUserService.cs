@@ -2,6 +2,7 @@ using AppApi.Data;
 using AppApi.Modules.Users.Models;
 using AppApi.Modules.Users.DTOs;
 using Microsoft.EntityFrameworkCore;
+using AppApi.Exceptions;
 
 
 namespace AppApi.Modules.Users.Services
@@ -23,7 +24,7 @@ namespace AppApi.Modules.Users.Services
 
             if (userExists)
             {
-                throw new InvalidOperationException("Email already in use.");
+                throw new GlobalError("Email already in use.", 409);
             }
 
             var user = new User
