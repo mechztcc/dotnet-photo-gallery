@@ -15,10 +15,12 @@ public class GalleryController : ControllerBase
 
     private readonly CreateGalleryService _createGalleryService;
 
+    private readonly ListAllGalleryService _listAllGalleryService;
 
-    public GalleryController(CreateGalleryService createGalleryService)
+    public GalleryController(CreateGalleryService createGalleryService, ListAllGalleryService listAllGalleryService)
     {
         _createGalleryService = createGalleryService;
+        _listAllGalleryService = listAllGalleryService;
     }
 
     [Authorize]
@@ -38,5 +40,19 @@ public class GalleryController : ControllerBase
 
         var newGallery = await _createGalleryService.Execute(payload);
         return Ok(newGallery);
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> ListAll([FromQuery] int page, [FromQuery] int size = 10)
+    {
+
+        if (page < 1 || size < 1)
+        {
+            return BadRequest("Parâmetros de paginação inválidos.");
+        }
+
+        var galleries = await _listAllGalleryService.Execute(page, size);
+        return Ok(galleries);
     }
 }

@@ -39,6 +39,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<CreateUserService>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<CreateGalleryService>();
+builder.Services.AddScoped<ListAllGalleryService>();
 // builder.Services.AddSwaggerGen();
 builder.Logging.AddConsole(); 
 builder.Logging.AddDebug(); 
