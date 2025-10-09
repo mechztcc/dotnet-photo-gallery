@@ -40,6 +40,15 @@ builder.Services.AddScoped<CreateUserService>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<CreateGalleryService>();
 builder.Services.AddScoped<ListAllGalleryService>();
+builder.Services.AddScoped<ListAllGalleryByUserService>();
+
+// var assembly = typeof(Program).Assembly;
+// builder.Services.Scan(scan => scan
+//     .FromAssemblies(assembly)
+//     .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Service")))
+//     .AsSelf()
+//     .WithScopedLifetime());
+
 // builder.Services.AddSwaggerGen();
 builder.Logging.AddConsole(); 
 builder.Logging.AddDebug(); 

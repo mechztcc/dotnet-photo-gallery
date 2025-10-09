@@ -17,10 +17,14 @@ public class GalleryController : ControllerBase
 
     private readonly ListAllGalleryService _listAllGalleryService;
 
-    public GalleryController(CreateGalleryService createGalleryService, ListAllGalleryService listAllGalleryService)
+
+    private readonly ListAllGalleryByUserService _listAllGalleryByUserService;
+
+    public GalleryController(CreateGalleryService createGalleryService, ListAllGalleryService listAllGalleryService, ListAllGalleryByUserService listAllGalleryByUserService)
     {
         _createGalleryService = createGalleryService;
         _listAllGalleryService = listAllGalleryService;
+        _listAllGalleryByUserService = listAllGalleryByUserService;
     }
 
     [Authorize]
@@ -43,7 +47,7 @@ public class GalleryController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet]
+    [HttpGet("list")]
     public async Task<IActionResult> ListAll([FromQuery] int page, [FromQuery] int size = 10)
     {
 
@@ -53,6 +57,26 @@ public class GalleryController : ControllerBase
         }
 
         var galleries = await _listAllGalleryService.Execute(page, size);
+        return Ok(galleries);
+    }
+
+
+    [Authorize]
+    [HttpGet("list-by-user")]
+    public async Task<IActionResult> ListAllByUserId([FromQuery] int page, [FromQuery] int size = 10)
+    {
+        if (page < 1 || size < 1)
+        {
+            return BadRequest("Parâmetros de paginação inválidos.");
+        }
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim == null)
+            return Unauthorized("UserId not found in token");
+
+        var userId = int.Parse(userIdClaim);
+
+        var galleries = await _listAllGalleryByUserService.Execute(userId, page, size);
         return Ok(galleries);
     }
 }

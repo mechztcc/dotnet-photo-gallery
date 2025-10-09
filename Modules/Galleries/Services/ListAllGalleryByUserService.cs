@@ -6,26 +6,24 @@ using Microsoft.EntityFrameworkCore;
 namespace AppApi.Modules.Galleries.Services;
 
 
-public class ListAllGalleryService
+public class ListAllGalleryByUserService
 {
     private readonly AppDbContext _context;
 
-    public ListAllGalleryService(AppDbContext context)
+    public ListAllGalleryByUserService(AppDbContext context)
     {
         _context = context;
     }
 
 
-
-    public async Task<object> Execute(int pageNumber = 1, int pageSize = 10)
+    public async Task<object> Execute(int userId, int pageNumber = 1, int pageSize = 10)
     {
-
         var query = _context.Galleries.AsQueryable();
 
         var totalCount = await query.CountAsync();
-
         var galleries = await query
             .OrderBy(g => g.Id)
+            .Where(g => g.UserId == userId)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -39,4 +37,5 @@ public class ListAllGalleryService
             totalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
         };
     }
+
 }
