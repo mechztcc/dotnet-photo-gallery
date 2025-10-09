@@ -11,9 +11,12 @@ public class UsersController : ControllerBase
 
     private readonly CreateUserService _createUserService;
 
-    public UsersController(CreateUserService createUserService)
+    private readonly LoginService _loginService;
+
+    public UsersController(CreateUserService createUserService, LoginService loginService)
     {
-        this._createUserService = createUserService;
+        _createUserService = createUserService;
+        _loginService = loginService;
     }
 
     [HttpPost]
@@ -24,8 +27,21 @@ public class UsersController : ControllerBase
             return BadRequest(ModelState);
         }
 
+        
         var newUser = await _createUserService.Execute(user);
         return Ok(newUser);
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginDTO payload)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var response = await _loginService.Execute(payload);
+        return Ok(response);
     }
 
 }
