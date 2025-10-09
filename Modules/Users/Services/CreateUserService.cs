@@ -3,6 +3,7 @@ using AppApi.Modules.Users.Models;
 using AppApi.Modules.Users.DTOs;
 using Microsoft.EntityFrameworkCore;
 using AppApi.Exceptions;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace AppApi.Modules.Users.Services
@@ -11,9 +12,12 @@ namespace AppApi.Modules.Users.Services
     {
         private readonly AppDbContext _context;
 
+        private readonly PasswordHasher<User> _passwordHasher;
+
         public CreateUserService(AppDbContext context)
         {
             _context = context;
+            _passwordHasher = new PasswordHasher<User>();
         }
 
 
@@ -31,8 +35,9 @@ namespace AppApi.Modules.Users.Services
             {
                 Name = payload.Name,
                 Email = payload.Email,
-                Password = payload.Password
             };
+
+            user.Password = _passwordHasher.HashPassword(user, payload.Password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
