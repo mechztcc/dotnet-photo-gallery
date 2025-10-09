@@ -1,5 +1,4 @@
 using AppApi.Data;
-using AppApi.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using AppApi.Modules.Users.Services;
 using AppApi.Middleware;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AppApi.Modules.Galleries.Services;
+using Scrutor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,18 +36,18 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<CreateUserService>();
-builder.Services.AddScoped<LoginService>();
-builder.Services.AddScoped<CreateGalleryService>();
-builder.Services.AddScoped<ListAllGalleryService>();
-builder.Services.AddScoped<ListAllGalleryByUserService>();
+// builder.Services.AddScoped<CreateUserService>();
+// builder.Services.AddScoped<LoginService>();
+// builder.Services.AddScoped<CreateGalleryService>();
+// builder.Services.AddScoped<ListAllGalleryService>();
+// builder.Services.AddScoped<ListAllGalleryByUserService>();
 
-// var assembly = typeof(Program).Assembly;
-// builder.Services.Scan(scan => scan
-//     .FromAssemblies(assembly)
-//     .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Service")))
-//     .AsSelf()
-//     .WithScopedLifetime());
+var assembly = typeof(Program).Assembly;
+builder.Services.Scan(scan => scan
+    .FromAssemblies(assembly)
+    .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Service")))
+    .AsSelf()
+    .WithScopedLifetime());
 
 // builder.Services.AddSwaggerGen();
 builder.Logging.AddConsole(); 
