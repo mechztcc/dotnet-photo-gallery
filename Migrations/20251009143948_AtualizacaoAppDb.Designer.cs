@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace dotnet_photo_gallery.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251009131627_AddUserRelationToGallery")]
-    partial class AddUserRelationToGallery
+    [Migration("20251009143948_AtualizacaoAppDb")]
+    partial class AtualizacaoAppDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,16 @@ namespace dotnet_photo_gallery.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -46,17 +56,11 @@ namespace dotnet_photo_gallery.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("isActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("isPublic")
-                        .HasColumnType("boolean");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Gallery");
+                    b.ToTable("Galleries");
                 });
 
             modelBuilder.Entity("AppApi.Modules.Users.Models.User", b =>

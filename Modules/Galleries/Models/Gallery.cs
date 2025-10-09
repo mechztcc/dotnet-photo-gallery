@@ -11,9 +11,11 @@ public class Gallery : BaseEntity
 
     public string Name { get; set; } = "";
 
-    public bool isActive { get; set; }
+    public string Description { get; set; } = "";
 
-    public bool isPublic { get; set; }
+    public bool IsActive { get; set; }
+
+    public bool IsPublic { get; set; }
 
     public int UserId { get; set; }
 

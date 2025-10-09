@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using AppApi.Modules.Users.Models;
 using AppApi.Modules.Shared.Models;
+using AppApi.Modules.Users.Models;
+using AppApi.Modules.Galleries.Models;
 
 namespace AppApi.Data
 {
@@ -11,25 +12,30 @@ namespace AppApi.Data
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Gallery> Galleries { get; set; }
+
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker
-            .Entries()
-            .Where(e => e.Entity is BaseEntity &&
-                (e.State == EntityState.Added || e.State == EntityState.Modified));
+                .Entries()
+                .Where(e => e.Entity is BaseEntity &&
+                       (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             foreach (var entityEntry in entries)
             {
-                ((User)entityEntry.Entity).UpdatedAt = DateTime.UtcNow;
+                var entity = (BaseEntity)entityEntry.Entity; 
+                entity.UpdatedAt = DateTime.UtcNow;
 
                 if (entityEntry.State == EntityState.Added)
                 {
-                    ((User)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
+                    entity.CreatedAt = DateTime.UtcNow;
                 }
             }
 
             return base.SaveChangesAsync(cancellationToken);
         }
+
+      
     }
 }

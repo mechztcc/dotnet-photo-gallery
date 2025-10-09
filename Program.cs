@@ -6,6 +6,7 @@ using AppApi.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AppApi.Modules.Galleries.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<CreateUserService>();
 builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<CreateGalleryService>();
 // builder.Services.AddSwaggerGen();
+builder.Logging.AddConsole(); 
+builder.Logging.AddDebug(); 
 
 var app = builder.Build();
 
@@ -46,6 +50,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

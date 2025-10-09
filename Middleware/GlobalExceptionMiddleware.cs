@@ -42,7 +42,7 @@ namespace AppApi.Middleware
                 var response = new
                 {
                     status = 500,
-                    message = "Internal server error."
+                    message = ex
                 };
 
                 await context.Response.WriteAsync(JsonSerializer.Serialize(response));
