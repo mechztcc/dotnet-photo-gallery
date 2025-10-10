@@ -44,7 +44,7 @@ public class CreatePhotoService
         _context.Photos.Add(photo);
         await _context.SaveChangesAsync();
 
-      
+
         return new
         {
             id = photo.Id,
@@ -52,7 +52,13 @@ public class CreatePhotoService
             description = photo.Description,
             base64 = photo.Base64,
             createdAt = photo.CreatedAt,
-            updatedAt = photo.UpdatedAt
+            updatedAt = photo.UpdatedAt,
+            gallery = new
+            {
+                id = galleryExists.Id,
+                name = galleryExists.Name,
+                description = galleryExists.Description
+            },
         };
     }
 }
