@@ -1,10 +1,8 @@
 
 
 using AppApi.Data;
-using AppApi.Exceptions;
 using AppApi.Modules.Galleries.DTOs;
 using AppApi.Modules.Galleries.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace AppApi.Modules.Galleries.Services;
 

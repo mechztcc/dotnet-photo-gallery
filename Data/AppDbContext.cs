@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using AppApi.Modules.Shared.Models;
 using AppApi.Modules.Users.Models;
 using AppApi.Modules.Galleries.Models;
+using AppApi.Modules.Photos.Models;
 
 namespace AppApi.Data
 {
@@ -14,6 +15,8 @@ namespace AppApi.Data
 
         public DbSet<Gallery> Galleries { get; set; }
 
+        public DbSet<Photo> Photos { get; set; }
+
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -24,7 +27,7 @@ namespace AppApi.Data
 
             foreach (var entityEntry in entries)
             {
-                var entity = (BaseEntity)entityEntry.Entity; 
+                var entity = (BaseEntity)entityEntry.Entity;
                 entity.UpdatedAt = DateTime.UtcNow;
 
                 if (entityEntry.State == EntityState.Added)
@@ -36,6 +39,6 @@ namespace AppApi.Data
             return base.SaveChangesAsync(cancellationToken);
         }
 
-      
+
     }
 }

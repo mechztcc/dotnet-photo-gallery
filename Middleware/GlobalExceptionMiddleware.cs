@@ -35,17 +35,18 @@ namespace AppApi.Middleware
             }
             catch (Exception ex)
             {
-                // Exception padrão (500)
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
                 var response = new
                 {
                     status = 500,
-                    message = ex
+                    message = ex.Message, // <- somente a mensagem
+                                          // stackTrace = ex.StackTrace // opcional, só em dev
                 };
 
                 await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+
             }
         }
     }

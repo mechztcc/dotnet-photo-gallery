@@ -37,11 +37,7 @@ public class GalleryController : ControllerBase
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreateGalleryDTO payload)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
+      
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userIdClaim == null)
             return Unauthorized("UserId not found in token");
@@ -90,10 +86,6 @@ public class GalleryController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateGalleryDTO payload)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
 
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userIdClaim == null)

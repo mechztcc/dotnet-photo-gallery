@@ -1,4 +1,5 @@
 
+using AppApi.Modules.Photos.Models;
 using AppApi.Modules.Shared.Models;
 using AppApi.Modules.Users.Models;
 
@@ -20,6 +21,8 @@ public class Gallery : BaseEntity
     public int UserId { get; set; }
 
     public User User { get; set; } = null!;
+
+    public ICollection<Photo> Photos { get; set; } = new List<Photo>();
 }
 
 
