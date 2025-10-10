@@ -17,14 +17,20 @@ public class GalleryController : ControllerBase
 
     private readonly ListAllGalleryService _listAllGalleryService;
 
-
     private readonly ListAllGalleryByUserService _listAllGalleryByUserService;
 
-    public GalleryController(CreateGalleryService createGalleryService, ListAllGalleryService listAllGalleryService, ListAllGalleryByUserService listAllGalleryByUserService)
+    private readonly UpdateGalleryService _updateGalleryService;
+
+    public GalleryController(CreateGalleryService createGalleryService,
+        ListAllGalleryService listAllGalleryService,
+        ListAllGalleryByUserService listAllGalleryByUserService,
+        UpdateGalleryService updateGalleryService
+    )
     {
         _createGalleryService = createGalleryService;
         _listAllGalleryService = listAllGalleryService;
         _listAllGalleryByUserService = listAllGalleryByUserService;
+        _updateGalleryService = updateGalleryService;
     }
 
     [Authorize]
@@ -78,5 +84,27 @@ public class GalleryController : ControllerBase
 
         var galleries = await _listAllGalleryByUserService.Execute(userId, page, size);
         return Ok(galleries);
+    }
+
+    [Authorize]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateGalleryDTO payload)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim == null)
+            return Unauthorized("UserId not found in token");
+
+        var userId = int.Parse(userIdClaim);
+
+        payload.GalleryId = id;
+        payload.UserId = userId;
+
+        var gallery = await _updateGalleryService.Execute(payload);
+        return Ok(gallery);
     }
 }
